@@ -1,0 +1,24 @@
+{% extends 'getfeedback/base.html' %}
+
+{% block content %}
+<h1>Your datasets</h1>
+<br/>
+<p>Share the feedback link with anyone you want to vote on the dataset.</p>
+<br/>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Feedback link</th>
+        <th>Collected data</th>
+    </tr>
+    {% for q in qs %}
+    <tr>
+        <td>{{ q.description }}</td>
+        <td><a href="{% url 'answer' id=q.id %}">Link</a></td>
+        <td><a href="{% url 'details' id=q.id %}">Data</a></td>
+    </tr>
+
+    {% endfor %}
+
+</table>
+{% endblock %}

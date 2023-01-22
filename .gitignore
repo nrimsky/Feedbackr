@@ -1,0 +1,12 @@
+venv
+*.log
+*.pot
+*.pyc
+__pycache__
+db.sqlite3
+media
+.vscode
+**/__pycache__/
+**/*.db
+*/.sqlite3
+**/*.sqlite3

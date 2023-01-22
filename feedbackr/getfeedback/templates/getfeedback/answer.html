@@ -1,0 +1,76 @@
+{% extends 'getfeedback/base.html' %}
+
+{% block content %}
+<p>Please vote on whether the completion is correct for the prompt</p>
+<br />
+<table>
+    <tr>
+        <th>Prompt</th>
+        <th>Completion</th>
+        <th>Vote Yes</th>
+        <th>Vote No</th>
+    </tr>
+    {% for q in questions %}
+    <tr>
+        <td>{{ q.prompt }}</td>
+        <td>{{ q.completion }}</td>
+        <td>
+            <form method="post" action="{% url 'voteyes' %}" class="yesform">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{ q.id }}">
+                <button type="submit" class="yes">YES</button>
+            </form>
+        </td>
+        <td>
+            <form method="post" action="{% url 'voteno' %}" class="noform">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{ q.id }}">
+                <button type="submit" class="no">NO</button>
+            </form>
+        </td>
+    </tr>
+
+    {% endfor %}
+
+</table>
+{% endblock %}
+
+{% block javascript %}
+<script>
+    var yesbtns = document.getElementsByClassName("yes");
+    var nobtns = document.getElementsByClassName("no");
+    var yesforms = document.getElementsByClassName("yesform");
+    var noforms = document.getElementsByClassName("noform");
+    for (let i = 0; i < yesbtns.length; i++) {
+        yesbtns[i].addEventListener("click", function (event) {
+            event.preventDefault();
+            const formData = new FormData(yesforms[i]);
+            fetch(yesforms[i].action, {
+                method: "POST",
+                body: formData
+            }).then(() => {
+                event.target.disabled = true;
+                nobtns[i].hidden = true;
+            }).catch(error => {
+                console.error(error);
+            });
+        });
+    }
+    for (let i = 0; i < nobtns.length; i++) {
+        nobtns[i].addEventListener("click", function (event) {
+            event.preventDefault();
+            const formData = new FormData(noforms[i]);
+            fetch(noforms[i].action, {
+                method: "POST",
+                body: formData
+            }).then(() => {
+                event.target.disabled = true;
+                yesbtns[i].hidden = true;
+            }).catch(error => {
+                console.error(error);
+            });
+        });
+    }
+
+</script>
+{% endblock %}

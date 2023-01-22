@@ -1,0 +1,12 @@
+{% extends 'getfeedback/base.html' %}
+
+{% block content %}
+  <h1>Sign up</h1>
+  <br />
+  <form method="post" action='{% url "signup" %}'>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <br />
+    <button type="submit" class="btn">Sign up</button>
+  </form>
+{% endblock %}

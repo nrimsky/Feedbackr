@@ -1,0 +1,30 @@
+{% extends 'getfeedback/base.html' %}
+
+{% block content %}
+<h1>
+    Upload a new dataset
+</h1>
+<br />
+<p>
+    Please upload a plain text file in the csv format with at least 2 columns. First column is the prompt and the second
+    is the completion. Users will be able to vote yes or no on whether the completion looks correct for each row in the
+    file.
+</p>
+<br />
+<form action='{% url "upload" %}' method="POST" enctype="multipart/form-data" class="form-horizontal">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="name" class="col-md-3 col-sm-3 col-xs-12 control-label">File: </label>
+        <div class="col-md-8">
+            <input type="file" name="csv_file" id="csv_file" required="True" class="form-control">
+        </div>
+    </div>
+    <br />
+    <div class="form-group">
+        <div class="col-md-3 col-sm-3 col-xs-12 col-md-offset-3" style="margin-bottom:10px;">
+            <button class="btn btn-primary"> <span class="glyphicon glyphicon-upload"
+                    style="margin-right:5px;"></span>Upload </button>
+        </div>
+    </div>
+</form>
+{% endblock %}
