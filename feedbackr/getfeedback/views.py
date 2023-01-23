@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, logout
 from django.shortcuts import render, redirect, get_object_or_404
-import base64
+import json
 from django.views.decorators.http import require_POST
 
 
@@ -22,32 +22,31 @@ def upload(request):
     data = {}
     if "GET" == request.method:
         return render(request, "getfeedback/upload.html", data)
-    csv_file = request.FILES["csv_file"]
-    if csv_file.multiple_chunks():
+    json_file = request.FILES["json_file"]
+    if json_file.multiple_chunks():
         return HttpResponse("File too large", status=413)
-    file_data = csv_file.read().decode("utf-8")
-    lines = file_data.split("\n")
-    username = request.user.username
-    qs = QuestionSet.objects.create(
-        description=get_qs_name(username), creator=request.user
-    )
-    created = []
-    for l in lines:
-        parts = l.split(",")
-        if len(parts) < 2:
-            for qu in created:
-                qu.delete()
+    file_data = json_file.read().decode()
+    qs = None
+    try:
+        all_data = json.loads(file_data)
+        data = all_data["data"]
+        name = all_data.get("name", get_qs_name(request.user.username))
+        qs = QuestionSet.objects.create(
+            description=name, creator=request.user
+        )
+        valid_data = []
+        for d in data:
+            if len(d["prompt"]) < 1999 and len(d["completion"]) < 1999:
+                valid_data.append((d["prompt"], d["completion"]))
+            else:
+                return HttpResponse("Both prompt and completion should be less than 2000 characters", status=400)
+        for p, c in valid_data:
+            YesNoQuestion.objects.create(prompt=p, completion=c, question_set=qs)
+    except Exception as e:
+        print(e)
+        if qs is not None:
             qs.delete()
-            return HttpResponse("File must be a comma delimited plain text file with at least 2 columns for prompt and completion", status=400)
-        prompt = str(parts[0])
-        completion = str(parts[1])
-        if len(prompt) > 1999 or len(completion) > 1999:
-            for qu in created:
-                qu.delete()
-            qs.delete()
-            return HttpResponse("Both prompt and completion should be less than 400 characters", status=400)
-        q = YesNoQuestion.objects.create(prompt=prompt, completion=completion, question_set=qs)
-        created.append(q)
+        return HttpResponse("File must be a JSON with top level keys data and name. Data should contain an array of objects with keys prompt and completion", status=400)
     return HttpResponseRedirect(reverse("myqs"))
 
 

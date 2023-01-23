@@ -6,9 +6,7 @@
 </h1>
 <br />
 <p>
-    Please upload a plain text file in the csv format with at least 2 columns. First column is the prompt and the second
-    is the completion. Users will be able to vote yes or no on whether the completion looks correct for each row in the
-    file.
+    Please upload a JSON file in the format { "data": [ {"prompt": "...", "completion": "..."}, ... ], "name": "Dataset name" }.
 </p>
 <br />
 <form action='{% url "upload" %}' method="POST" enctype="multipart/form-data" class="form-horizontal">
@@ -16,7 +14,7 @@
     <div class="form-group">
         <label for="name" class="col-md-3 col-sm-3 col-xs-12 control-label">File: </label>
         <div class="col-md-8">
-            <input type="file" name="csv_file" id="csv_file" required="True" class="form-control">
+            <input type="file" name="json_file" id="json_file" required="True" class="form-control">
         </div>
     </div>
     <br />

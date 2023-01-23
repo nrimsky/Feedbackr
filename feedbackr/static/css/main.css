@@ -1,26 +1,38 @@
-/* Reset default styles */
+:root {
+    --theme-red: #EC0B43;
+    --theme-violet: #c92ae4;
+    --theme-blue: #0f7fab;
+    --theme-green: #59ae18;
+    --theme-yellow: #FFF689;
+    --theme-gray: #333333;
+    --theme-bg: #FFFFFF;
+}
+
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-a, a:visited {
-    color: purple;
-    text-decoration: underline dashed rgb(217, 125, 232);
+a,
+a:visited {
+    color: var(--theme-violet);
+    font-weight: 600;
+    text-decoration: none;
 }
 
 a:hover {
-    color: rgb(104, 0, 104);
-    text-decoration: underline solid rgb(217, 125, 232);
+    text-decoration: underline;
 }
 
 /* Set basic font and colors */
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     font-size: 16px;
-    color: #333;
-    background-color: #f2f2f2;
+    color: var(--theme-gray);
+    background-color: var(--theme-bg);
+    position: relative;
 }
 
 /* Create a container to center the website */
@@ -28,36 +40,27 @@ body {
     max-width: 1200px;
     margin: 40px auto;
     padding: 0 40px;
+    min-height: 80vh;
     position: relative;
 }
 
 /* Create a responsive navigation bar */
 nav {
-    background-color: #333;
-    color: #fff;
     padding: 20px;
     display: flex;
     justify-content: start;
     align-items: center;
 }
 
-nav a, nav a:visited {
+nav a {
     margin: 0 10px;
-    color: rgb(209, 237, 249);
-    text-decoration: none;
-    font-weight: 600;
-    text-decoration: underline dashed rgb(217, 125, 232);
-    font-size: 21px;
 }
 
 /* Create a responsive button */
 .btn {
-    background-color: #eee;
-    border-radius: 0px;
-    border-width: 1px;
-    border-style: solid;
-    border-color: #ccc;
-    color: #333;
+    background-color: var(--theme-violet);
+    color: white;
+    border-radius: 2px;
     cursor: pointer;
     display: inline-block;
     font-weight: 600;
@@ -65,23 +68,20 @@ nav a, nav a:visited {
     text-align: center;
     vertical-align: baseline;
     margin: 4px 0;
+    border-style: none;
+    outline-style: none;
 }
 
 /* Make the button look good on hover */
 .btn:hover {
-    background-color:#ddd;
+    filter: brightness(90%);
 }
 
 /* Create a responsive footer */
 footer {
-    background-color:#333;
-    color: rgb(209, 237, 249);
     padding: 10px;
     text-align: center;
     font-size: 12px;
-    position: absolute;
-    bottom: 0;
-    left: 0;
     width: 100%;
 }
 
@@ -93,38 +93,63 @@ table {
 
 /* Add style to the table head */
 thead {
-    background-color: #333;
-    color: #fff;
+    background-color: var(--theme-gray);
+    color: white;
     font-weight: 600;
 }
 
-/* Add style to the table cells */
 td,
 th {
     padding: 10px;
-    border: 1px solid #ccc;
-}
-
-/* Add hover effect to the table rows */
-tr:hover {
-    background-color: #f2f2f2;
+    border: 1px solid var(--theme-gray);
 }
 
 .no {
-    background-color: red;
+    background-color: var(--theme-red);
     color: white;
     font-weight: 600;
     padding: 2px 4px;
     border-style: none;
     outline-style: none;
+    cursor: pointer;
 }
 
 .yes {
-    background-color: green;
+    background-color: var(--theme-green);
     color: white;
     font-weight: 600;
     padding: 2px 4px;
     border-style: none;
     outline-style: none;
+    cursor: pointer;
 }
 
+.yes:disabled,
+.no:disabled {
+    filter: saturate(20%);
+    color: white;
+}
+
+table {
+    max-width: 100%;
+}
+
+th,
+td {
+    max-height: 120px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    vertical-align: text-top;
+}
+
+ul > li, p {
+    margin-bottom: 4px;
+}
+
+input {
+    padding: 4px 8px;
+}
+
+label {
+    margin-right: 4px;
+}
