@@ -11,3 +11,4 @@ sqlparse==0.4.3
 tomli==2.0.1
 typing-extensions==4.4.0
 whitenoise==6.3.0
+psycopg2
