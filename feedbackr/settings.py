@@ -6,7 +6,7 @@ from django.test.runner import DiscoverRunner
 IS_HEROKU = "DYNO" in os.environ
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-ul)^=se&67#0z=u7a6*ren6omwli=zlfe08vivi+93+i!r+e51"
-if 'SECRET_KEY' in os.environ:
+if "SECRET_KEY" in os.environ:
     SECRET_KEY = os.environ["SECRET_KEY"]
 if IS_HEROKU:
     ALLOWED_HOSTS = ["*"]
@@ -24,7 +24,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "getfeedback"
+    "getfeedback",
 ]
 
 MIDDLEWARE = [
@@ -35,6 +35,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = "feedbackr.urls"
@@ -68,7 +69,8 @@ DATABASES = {
 
 if "DATABASE_URL" in os.environ:
     DATABASES["default"] = dj_database_url.config(
-        conn_max_age=MAX_CONN_AGE, ssl_require=True)
+        conn_max_age=MAX_CONN_AGE, ssl_require=True
+    )
 
     # Enable test database if found in CI environment.
     if "CI" in os.environ:
@@ -114,9 +116,7 @@ STATIC_URL = "static/"
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-STATICFILES_DIRS = [
-    BASE_DIR / "static"
-]
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -125,6 +125,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGIN_REDIRECT_URL = "/"
 
+
 class HerokuDiscoverRunner(DiscoverRunner):
     """Test Runner for Heroku CI, which provides a database for you.
     This requires you to set the TEST database (done for you by settings().)"""
@@ -132,6 +133,7 @@ class HerokuDiscoverRunner(DiscoverRunner):
     def setup_databases(self, **kwargs):
         self.keepdb = True
         return super(HerokuDiscoverRunner, self).setup_databases(**kwargs)
+
 
 if "CI" in os.environ:
     TEST_RUNNER = "gettingstarted.settings.HerokuDiscoverRunner"
