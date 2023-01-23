@@ -1,2 +1,2 @@
-web: gunicorn feedbackr.feedbackr.wsgi
-release: python feedbackr/manage.py migrate
+web: gunicorn feedbackr.wsgi
+release: python manage.py migrate
