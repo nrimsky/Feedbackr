@@ -9,6 +9,8 @@ from django.contrib.auth import login, logout
 from django.shortcuts import render, redirect, get_object_or_404
 import json
 from django.views.decorators.http import require_POST
+from django.db.models.functions import Random
+
 
 
 def get_qs_name(username):
@@ -94,6 +96,9 @@ def answer(request, id):
     try:
         qs = QuestionSet.objects.get(pk=id)
         questions = YesNoQuestion.objects.filter(question_set=qs)
+        order = request.GET.get('order')
+        if order == 'random':
+            questions = questions.annotate(random_order=Random()).order_by('random_order')
         return render(request, "getfeedback/answer.html", {"questions": questions})
     except QuestionSet.DoesNotExist:
         return HttpResponse("Question set not found", status=404)
