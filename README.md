@@ -4,7 +4,7 @@
 
 An app that enables users to easily collect yes/no feedback on language model outputs from humans for simple finetuning applications.
 
-Currently deployed at https://feedbackr.herokuapp.com/
+Currently not deployed anywhere but can easily be at some point :D
 
 ## Development
 
